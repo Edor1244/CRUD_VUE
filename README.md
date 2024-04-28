@@ -1,4 +1,4 @@
-# crud_vue_01
+# CRUD_VUE
 
 ## Project setup
 ```
