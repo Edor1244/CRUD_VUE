@@ -8,7 +8,7 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-// Crear un nuevo producto
+// Crear un nuevo producto  <---------Seccion de Videos--------> 
 app.post('/api/productos', async (req, res) => {
   const { nombre, descripcion, precio } = req.body;
   const producto = await Producto.create({ nombre, descripcion, precio });
@@ -52,8 +52,10 @@ sequelize.sync().then(() => {
     console.log(`Servidor corriendo en http://localhost:${PORT}`);
   });
 });
+
+
+
 //                                     <------- Seccion de Usuarios ------->
-// Crear un usuario nuevo
 // Crear un usuario nuevo
 app.post('/api/usuario', async (req, res) => {
   const { username, password } = req.body;

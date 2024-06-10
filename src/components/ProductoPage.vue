@@ -21,7 +21,6 @@
           </div>
           <div>
             <div class="row">
-              <div class="col-xs-12 col-sm-4"><button @click="cambiarPagina" class="btn btn-primary mr-2">Ir a Usuarios</button></div>
               <div class="col-xs-12 col-sm-4"><button type="submit" class="btn btn-primary mr-2">Crear</button></div>
               <div class="col-xs-12 col-sm-4"><button @click="cerrarSesion" class="btn btn-primary">Cerrar Sesión</button></div>
             </div>
@@ -172,9 +171,6 @@ export default {
       } catch (error) {
         console.error('Error al eliminar producto:', error);
       }
-    },
-    async cambiarPagina() {
-      this.$router.push('/usuariosPage');
     },
     cerrarSesion() {
       this.$router.push('/');

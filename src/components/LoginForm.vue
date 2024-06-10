@@ -13,7 +13,12 @@
             <label for="password">Password</label>
             <input type="password" id="password" v-model="usuario.password" required>
           </div>
-          <button type="submit">Login</button>
+          <div>
+            <div class="col-xs-12 col-sm-4"><button type="submit" class="btn btn-primary mr-2">Login</button></div>
+          </div>
+          <div>
+            <div class="col-xs-12 col-sm-4"><button @click="cambiarPagina" class="btn btn-primary mr-2">Registrarse</button></div>
+          </div>
         </form>
       </div>
     </div>
@@ -50,13 +55,13 @@ export default {
         this.error = 'Ha ocurrido un error. Intente nuevamente más tarde.';
       }
     },
+    async cambiarPagina() {
+      this.$router.push('/usuariosPage');
+    },
   },
 };
 </script>
 
-Sure, you can add more styles to your login form. Here's an example of how you can style your login form to make it more visually appealing:
-
-```css
 <style scoped>
 .container {
   max-width: 800px; /* Limita el ancho para una lectura más cómoda */
@@ -103,6 +108,3 @@ Sure, you can add more styles to your login form. Here's an example of how you c
   background-color: #0056b3;
 }
 </style>
-```
-
-This CSS will center the login form on the page, add some spacing between the form fields, and style the submit button. You can adjust the colors and sizes as needed to match your design preferences.

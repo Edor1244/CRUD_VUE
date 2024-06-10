@@ -1,6 +1,8 @@
 <template>
   <div class="container my-5">
-    <h1 class="mb-5">Gestión de Usuarios</h1>
+    <h1 class="mb-5">Registro de Usuarios Nuevos</h1>
+
+
     <!-- Formulario para crear un nuevo usuario -->
     <div class="card mb-5">
       <div class="card-body">
@@ -11,67 +13,20 @@
             <input id="nombreProducto" v-model="nuevoUsuario.username" type="text" placeholder="Introduce tu UserName" class="form-control">
           </div>
           <div class="mb-3">
-            <label for="descripcionProducto" class="form-label">Password</label>
-            <input id="descripcionProducto" v-model="nuevoUsuario.password" type="text" placeholder="Introduce un Password" class="form-control">
+            <label for="labelPassword" class="form-label">Password</label>
+            <input id="InputPassword" v-model="nuevoUsuario.password" type="text" placeholder="Introduce un Password" class="form-control">
+          </div>
+          <div class="mb-3">
+            <label for="labelPassword2" class="form-label">Password</label>
+            <input id="Inputpassword2" v-model="nuevoUsuario.password2" type="text" placeholder="Introduce de nuevo el Password" class="form-control">
           </div>
           <div class="row">
-            <div class="col-xs-12 col-sm-4"><button @click="cambiarPagina" class="btn btn-primary mr-2">Ir a Productos</button></div>
             <div class="col-xs-12 col-sm-4"><button type="submit" class="btn btn-primary mr-2">Crear</button></div>
-            <div class="col-xs-12 col-sm-4"><button @click="cerrarSesion" class="btn btn-primary">Cerrar Sesión</button></div>
+            <div class="col-xs-12 col-sm-4"><button @click="cerrarSesion" class="btn btn-primary">Ir a login</button></div>
           </div>
         </form>
       </div>
     </div>
-
-    <!-- Tabla de listado de usuarios -->
-    <table class="table table-hover">
-      <thead>
-      <tr>
-        <th>UserName</th>
-        <th>Acciones</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr v-for="usuario in usuarios" :key="usuario.id">
-        <td>{{ usuario.username }}</td>
-        <td>
-          <button @click="editarUsuario(usuario)" class="btn btn-sm btn-info mr-2">
-            <i class="fas fa-edit"></i>
-          </button>
-          <button @click="eliminarUsuario(usuario.id)" class="btn btn-sm btn-danger">
-            <i class="fas fa-trash"></i>
-          </button>
-        </td>
-      </tr>
-      </tbody>
-    </table>
-
-    <!-- Modal para editar un usuario existente -->
-    <div class="modal fade" id="editModalUser" tabindex="-1" role="dialog" aria-labelledby="editModalUserLabel" aria-hidden="true" v-if="usuarioEditando">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="editModalUserLabel">Editar Usuario</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar" @click="cancelarEdicion">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <form @submit.prevent="guardarUsuario">
-              <div class="mb-3">
-                <label for="editUsername" class="form-label">Username</label>
-                <input id="editUsername" v-model="usuarioEditando.username" type="text" class="form-control">
-              </div>
-            </form>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal"  @click="cancelarEdicion">Cerrar</button>
-            <button type="submit" class="btn btn-success" @click="guardarUsuario">Guardar Cambios</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
   </div>
 </template>
 
@@ -106,15 +61,21 @@ export default {
     },
     async crearUsuario() {
       try {
-        const respuesta = await this.$http.post('http://localhost:3000/api/usuario', this.nuevoUsuario);
+        if (this.nuevoUsuario.password !== this.nuevoUsuario.password2) {
+          alert('Las contraseñas no coinciden');
+          return;
+        }else{
+          const respuesta = await this.$http.post('http://localhost:3000/api/usuario', this.nuevoUsuario);
         this.usuarios.push(respuesta.data);
         this.nuevoUsuario = { username: '', password: ''};
+        alert('Usuario creado exitosamente');
+        this.cambiarPagina();
+        }
       } catch (error) {
         console.error('Error al crear usuario:', error);
       }
     },
     editarUsuario(usuario) {
-
       this.usuarioEditando = null;
       this.usuarioEditando = usuario;
       this.modalInstanceUser = null;
@@ -138,7 +99,6 @@ export default {
         this.usuarios.splice(index, 1, respuesta.data);
         this.usaurioEditando = null;
         this.modalInstanceUser.hide();
-
       } catch (error) {
         console.error('Error al guardar cambios:', error);
       }
