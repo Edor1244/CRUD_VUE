@@ -28,8 +28,6 @@ const Usuario = sequelize.define('usuario', {
   timestamps: false // Desactivar la creación automática de las columnas createdAt y updatedAt
 });
 
-
-
 //Exportar los modelos
 module.exports = {
   sequelize,
