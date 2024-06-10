@@ -84,7 +84,7 @@ export default {
         this.usuarios.push(respuesta.data);
         this.nuevoUsuario = { username: '', password: '', nombre: '', apellido1: '', apellido2: ''};
         alert('Usuario creado exitosamente');
-        this.cambiarPagina();
+        this.$router.push('/videosMain');
         }
       } catch (error) {
         console.error('Error al crear usuario:', error);
@@ -129,9 +129,6 @@ export default {
       } catch (error) {
         console.error('Error al eliminar usuario:', error);
       }
-    },
-    async cambiarPagina() {
-      this.$router.push('/productosPage');
     },
      cerrarSesion() {
       this.$router.push('/');

@@ -20,7 +20,10 @@ const Usuario = sequelize.define('usuario', {
     autoIncrement: true
   },
   username: Sequelize.STRING,
-  password: Sequelize.STRING
+  password: Sequelize.STRING,
+  nombre: Sequelize.STRING,
+  apellido1: Sequelize.STRING,
+  apellido2: Sequelize.STRING,
 }, {
   timestamps: false // Desactivar la creación automática de las columnas createdAt y updatedAt
 });
