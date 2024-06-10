@@ -13,6 +13,18 @@
             <input id="nombreProducto" v-model="nuevoUsuario.username" type="text" placeholder="Introduce tu UserName" class="form-control">
           </div>
           <div class="mb-3">
+            <label for="nombreProducto" class="form-label">Nombre</label>
+            <input id="nombreProducto" v-model="nuevoUsuario.nombre" type="text" placeholder="Introduce tu UserName" class="form-control">
+          </div>
+          <div class="mb-3">
+            <label for="nombreProducto" class="form-label">Apellido 1</label>
+            <input id="nombreProducto" v-model="nuevoUsuario.apellido1" type="text" placeholder="Introduce tu UserName" class="form-control">
+          </div>
+          <div class="mb-3">
+            <label for="nombreProducto" class="form-label">Apellido 2</label>
+            <input id="nombreProducto" v-model="nuevoUsuario.apellido2" type="text" placeholder="Introduce tu UserName" class="form-control">
+          </div>
+          <div class="mb-3">
             <label for="labelPassword" class="form-label">Password</label>
             <input id="InputPassword" v-model="nuevoUsuario.password" type="text" placeholder="Introduce un Password" class="form-control">
           </div>
@@ -42,6 +54,9 @@ export default {
       nuevoUsuario: {
         username: '',
         password: '',
+        nombre: '',
+        apellido1: '',
+        apellido2: '',
       },
       usuarioEditando: null,
       modalInstanceUser: null,  // Referencia al objeto Modal
@@ -67,7 +82,7 @@ export default {
         }else{
           const respuesta = await this.$http.post('http://localhost:3000/api/usuario', this.nuevoUsuario);
         this.usuarios.push(respuesta.data);
-        this.nuevoUsuario = { username: '', password: ''};
+        this.nuevoUsuario = { username: '', password: '', nombre: '', apellido1: '', apellido2: ''};
         alert('Usuario creado exitosamente');
         this.cambiarPagina();
         }

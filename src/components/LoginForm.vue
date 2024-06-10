@@ -1,6 +1,6 @@
 <template>
     <div class="container my-5">
-      <h1 class="mb-5">Edor´s app</h1>
+      <h1 class="mb-5">InnovaTube</h1>
       <!-- Login -->
       <div class="login-form">
         <h1>Login</h1>
@@ -43,14 +43,13 @@ export default {
         const respuesta = await this.$http.post('http://localhost:3000/api/login', this.usuario);
         console.log('Respuesta:', respuesta.data);
         this.error = null; // Clear any previous error
-
         if (respuesta.data.message === '¡Inicio de sesión exitoso!') {
-          // Successful login, assuming your server sets the session
-          this.$router.push('/productosPage'); // Redirect to protected area
+          this.$router.push('/videosMain'); // Redirect to protected area
         } else {
-          this.error = respuesta.data.message; // Display error message
+          this.error = respuesta.data.message; // Display error message 
         }
       } catch (error) {
+        alert('Usuario o contraseña incorrectos');
         console.error('Error al iniciar sesión:', error);
         this.error = 'Ha ocurrido un error. Intente nuevamente más tarde.';
       }

@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'; // Importa funciones necesarias desde vue-router
 
+import videosMain from './components/VideosMainPage.vue'; // Importa componente VideosMain.vue
 import login from './components/LoginForm.vue';
 import productoPage from './components/ProductoPage.vue';
 import userPage from "@/components/UserPage.vue";
@@ -22,6 +23,11 @@ const router=createRouter({
             path: '/usuariosPage', // Ruta para la página Usuario
             name: 'UsuariosPage',
             component: userPage // Componente de la página usuarios
+        },
+        {
+            path: '/videosMain', // Ruta para la página principal (App.vue)
+            name: 'VideosMain',
+            component: videosMain // Componente de la página principal
         }
     ]
 });
