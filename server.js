@@ -3,7 +3,7 @@ const cors = require('cors');
 const { sequelize, Producto, Usuario } = require('./src/database');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
-
+const { Op } = require('sequelize');
 const app = express();
 app.use(express.json());
 app.use(cors());
@@ -58,12 +58,13 @@ sequelize.sync().then(() => {
 //                                     <------- Seccion de Usuarios ------->
 
 const verifyRecaptcha = require('./src/MiddleWare/verifyRecaptcha'); // Asegúrate de que la ruta sea correcta
+const e = require('express');
 // Crear un usuario nuevo
 
 app.post('/api/usuario',verifyRecaptcha, async (req, res) => {
   console.log(req.body);
   console.log('Estamos en el post de usuario');
-  const { username, password,nombre ,apellido1,apellido2  } = req.body;
+  const { username, password,nombre ,apellido1,apellido2,email } = req.body;
   // Generar un hash de la contraseña
   bcrypt.hash(password, saltRounds, async (err, hash) => {
     if (err) {
@@ -72,7 +73,7 @@ app.post('/api/usuario',verifyRecaptcha, async (req, res) => {
     }
     try {
       // Crear el usuario con la contraseña encriptada
-      const usuario = await Usuario.create({ username, password: hash,nombre,apellido1,apellido2 });
+      const usuario = await Usuario.create({ username, password: hash,nombre,apellido1,apellido2, email });
       res.json(usuario);
     } catch (error) {
       console.error('Error al crear el usuario:', error);
@@ -164,7 +165,12 @@ app.post('/api/login',verifyRecaptcha, async (req, res) => {
   const { username, password } = req.body;
 
   // Buscar el usuario en la base de datos por su nombre de usuario
-  const usuario = await Usuario.findOne({ where: { username } });
+  const usuario = await Usuario.findOne({ where: { 
+    [Op.or]: [
+      {username: username},
+      {email: username}
+    ] 
+  } });
 
   // Verificar si el usuario existe
   if (!usuario) {

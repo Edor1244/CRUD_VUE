@@ -18,6 +18,7 @@ const Usuario = sequelize.define('usuario', {
   nombre: Sequelize.STRING,
   apellido1: Sequelize.STRING,
   apellido2: Sequelize.STRING,
+  email: Sequelize.STRING,
 }, {
   timestamps: false // Desactivar la creación automática de las columnas createdAt y updatedAt
 });

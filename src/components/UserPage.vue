@@ -9,20 +9,24 @@
         <h2 class="card-title">Crear Nuevo Usuario</h2>
         <form @submit.prevent="crearUsuario">
           <div class="mb-3">
-            <label for="nombreProducto" class="form-label">UserName</label>
-            <input id="nombreProducto" v-model="nuevoUsuario.username" type="text" placeholder="Introduce tu UserName" class="form-control">
+            <label for="username" class="form-label">UserName</label>
+            <input id="username" v-model="nuevoUsuario.username" type="text" placeholder="Introduce tu UserName" class="form-control">
           </div>
           <div class="mb-3">
-            <label for="nombreProducto" class="form-label">Nombre</label>
-            <input id="nombreProducto" v-model="nuevoUsuario.nombre" type="text" placeholder="Introduce tu UserName" class="form-control">
+            <label for="email" class="form-label">Email</label>
+            <input id="email" v-model="nuevoUsuario.email" type="text" placeholder="Introduce tu email" class="form-control">
           </div>
           <div class="mb-3">
-            <label for="nombreProducto" class="form-label">Apellido 1</label>
-            <input id="nombreProducto" v-model="nuevoUsuario.apellido1" type="text" placeholder="Introduce tu UserName" class="form-control">
+            <label for="nombre" class="form-label">Nombre</label>
+            <input id="nombre" v-model="nuevoUsuario.nombre" type="text" placeholder="Introduce tu nombre" class="form-control">
           </div>
           <div class="mb-3">
-            <label for="nombreProducto" class="form-label">Apellido 2</label>
-            <input id="nombreProducto" v-model="nuevoUsuario.apellido2" type="text" placeholder="Introduce tu UserName" class="form-control">
+            <label for="Apellido1" class="form-label">Apellido 1</label>
+            <input id="Apellido1" v-model="nuevoUsuario.apellido1" type="text" placeholder="Introduce tu Primer Apellido" class="form-control">
+          </div>
+          <div class="mb-3">
+            <label for="Apellido2" class="form-label">Apellido 2</label>
+            <input id="Apellido2" v-model="nuevoUsuario.apellido2" type="text" placeholder="Introduce tu Segundo Apellido" class="form-control">
           </div>
           <div class="mb-3">
             <label for="labelPassword" class="form-label">Password</label>
@@ -59,6 +63,7 @@ export default {
         nombre: '',
         apellido1: '',
         apellido2: '',
+        email: '',
         recaptchaToken: null,
       },
       usuarioEditando: null,
@@ -88,7 +93,7 @@ export default {
         }else{
           const respuesta = await this.$http.post('http://localhost:3000/api/usuario', this.nuevoUsuario);
           this.usuarios.push(respuesta.data);
-          this.nuevoUsuario = { username: '', password: '', nombre: '', apellido1: '', apellido2: ''};
+          this.nuevoUsuario = { username: '', password: '', nombre: '', apellido1: '', apellido2: '', email: ''};
           alert('Usuario creado exitosamente');
           this.$router.push('/videosMain');
         }
