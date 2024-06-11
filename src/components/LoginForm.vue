@@ -22,6 +22,9 @@
           <div>
             <div class="col-xs-12 col-sm-4"><button @click="cambiarPagina" class="btn btn-primary mr-2">Registrarse</button></div>
           </div>
+          <div>
+            <div class="col-xs-12 col-sm-4"><button @click="cambiarPaginaContraseña" class="btn btn-primary mr-2">Recuperar Contraseña</button></div>
+          </div>
         </form>
       </div>
     </div>
@@ -76,6 +79,9 @@ export default {
     },
     async cambiarPagina() {
       this.$router.push('/usuariosPage');
+    },
+    async cambiarPaginaContraseña() {
+      this.$router.push('/passwordRecovery');
     },
   },
 };

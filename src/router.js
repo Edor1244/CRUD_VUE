@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'; // Importa funcione
 import videosMain from './components/VideosMainPage.vue'; // Importa componente VideosMain.vue
 import login from './components/LoginForm.vue';
 import userPage from "@/components/UserPage.vue";
+import passwordRecovery from "@/components/RecuperarContraseña.vue";
 
 
 const router=createRouter({
@@ -21,6 +22,11 @@ const router=createRouter({
             path: '/videosMain', // Ruta para la página principal (App.vue)
             name: 'VideosMain',
             component: videosMain // Componente de la página principal
+        },
+        {
+            path: '/passwordRecovery', // Ruta para la página de recuperación de contraseña
+            name: 'PasswordRecovery',
+            component: passwordRecovery // Componente de la página de recuperación de contraseña
         }
     ]
 });

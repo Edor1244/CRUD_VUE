@@ -123,7 +123,35 @@ app.put('/api/usuarios/:id', async (req, res) => {
   await usuario.save();
   res.json(usuario);
 });
+// Actualizar contraseña user
+app.put('/api/usuariosPassRecovery', async (req, res) => {
+  const { password , username} = req.body;
 
+  // Generar un hash de la contraseña
+  bcrypt.hash(password, saltRounds, async (err, hash) => {
+    if (err) {
+      console.error('Error al generar el hash de la contraseña:', err);
+      return res.status(500).send('Error interno del servidor');
+    }
+
+    try {
+      // Buscar al usuario por su UserName
+      const usuario = await Usuario.findOne({ where: { username: username } });
+
+      // Actualizar la contraseña del usuario con la contraseña encriptada
+      usuario.password = hash;
+
+      // Guardar el usuario actualizado en la base de datos
+      await usuario.save();
+
+      // Enviar la respuesta al cliente
+      res.json(usuario);
+    } catch (error) {
+      console.error('Error al actualizar la contraseña del usuario:', error);
+      res.status(500).send('Error al actualizar la contraseña del usuario');
+    }
+  });
+});
 // Eliminar un usuario
 app.delete('/api/usuarios/:id', async (req, res) => {
   const usuario = await Usuario.findByPk(req.params.id);
