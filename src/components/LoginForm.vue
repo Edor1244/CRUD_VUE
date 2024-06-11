@@ -1,3 +1,5 @@
+
+/* global grecaptcha */
 <template>
     <div class="container my-5">
       <h1 class="mb-5">InnovaTube</h1>
@@ -13,6 +15,7 @@
             <label for="password">Password</label>
             <input type="password" id="password" v-model="usuario.password" required>
           </div>
+          <div id="recaptcha-container"></div>
           <div>
             <div class="col-xs-12 col-sm-4"><button type="submit" class="btn btn-primary mr-2">Login</button></div>
           </div>
@@ -35,8 +38,21 @@ export default {
         password: '',
       },
       error: null,
+      sitekey:'6Lch0vUpAAAAALx8RLXtjFnrxuxBT6D-lDf9sDl5',
+      recaptchaToken: null,
     };
   },
+  mounted() {
+  let intervalId = setInterval(() => {
+    if (window.grecaptcha && window.grecaptcha.render) {
+      window.grecaptcha.render('recaptcha-container', {
+        sitekey: this.sitekey,
+        callback: this.onCaptchaVerified,
+      });
+      clearInterval(intervalId);
+    }
+  }, 100); // Verifica cada 100ms
+},
   methods: {
     async iniciarSesion() {
       try {
@@ -56,6 +72,9 @@ export default {
     },
     async cambiarPagina() {
       this.$router.push('/usuariosPage');
+    },
+    onCaptchaVerified(response) {
+      this.recaptchaToken = response;
     },
   },
 };

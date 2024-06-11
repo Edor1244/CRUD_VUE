@@ -32,6 +32,7 @@
             <label for="labelPassword2" class="form-label">Password</label>
             <input id="Inputpassword2" v-model="nuevoUsuario.password2" type="text" placeholder="Introduce de nuevo el Password" class="form-control">
           </div>
+          <div id="recaptcha-container"></div>
           <div class="row">
             <div class="col-xs-12 col-sm-4"><button type="submit" class="btn btn-primary mr-2">Crear</button></div>
             <div class="col-xs-12 col-sm-4"><button @click="cerrarSesion" class="btn btn-primary">Ir a login</button></div>
@@ -60,10 +61,21 @@ export default {
       },
       usuarioEditando: null,
       modalInstanceUser: null,  // Referencia al objeto Modal
+      sitekey:'6Lch0vUpAAAAALx8RLXtjFnrxuxBT6D-lDf9sDl5',
+      recaptchaToken: null,
     };
   },
   mounted() {
     this.obtenerUsuarios();
+    let intervalId = setInterval(() => {
+    if (window.grecaptcha && window.grecaptcha.render) {
+      window.grecaptcha.render('recaptcha-container', {
+        sitekey: this.sitekey,
+        callback: this.onCaptchaVerified,
+      });
+      clearInterval(intervalId);
+    }
+  }, 100); // Verifica cada 100ms
   },
   methods: {
     async obtenerUsuarios() {
@@ -132,6 +144,9 @@ export default {
     },
      cerrarSesion() {
       this.$router.push('/');
+    },
+    onCaptchaVerified(response) {
+      this.recaptchaToken = response;
     },
   },
 };

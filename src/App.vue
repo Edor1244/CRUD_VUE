@@ -12,7 +12,6 @@ export default {
   name: 'App',
 };
 </script>
-
 <style scoped>
 .app {
   /* Styles for the main application container */

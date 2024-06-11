@@ -56,8 +56,10 @@ sequelize.sync().then(() => {
 
 
 //                                     <------- Seccion de Usuarios ------->
+
+const verifyRecaptcha = require('./src/MiddleWare/verifyRecaptcha'); // Asegúrate de que la ruta sea correcta
 // Crear un usuario nuevo
-app.post('/api/usuario', async (req, res) => {
+app.post('/api/usuario',verifyRecaptcha, async (req, res) => {
   const { username, password } = req.body;
 
   // Generar un hash de la contraseña
@@ -128,7 +130,7 @@ app.delete('/api/usuarios/:id', async (req, res) => {
 });
 
 // Endpoint de inicio de sesión
-app.post('/api/login', async (req, res) => {
+app.post('/api/login',verifyRecaptcha, async (req, res) => {
   const { username, password } = req.body;
 
   // Buscar el usuario en la base de datos por su nombre de usuario
@@ -156,3 +158,5 @@ app.post('/api/login', async (req, res) => {
     }
   });
 });
+
+

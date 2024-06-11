@@ -6,12 +6,6 @@ const sequelize = new Sequelize({
   storage: path.join(__dirname, 'database.sqlite'),
 });
 
-const Producto = sequelize.define('producto', {
-  nombre: Sequelize.STRING,
-  descripcion: Sequelize.STRING,
-  precio: Sequelize.FLOAT,
-});
-
 // Definir el modelo de usuario
 const Usuario = sequelize.define('usuario', {
   id: {
@@ -31,6 +25,5 @@ const Usuario = sequelize.define('usuario', {
 //Exportar los modelos
 module.exports = {
   sequelize,
-  Producto,
   Usuario,
 };
