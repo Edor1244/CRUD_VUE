@@ -30,9 +30,9 @@
           </div>
           <div class="mb-3">
             <label for="labelPassword2" class="form-label">Password</label>
-            <input id="Inputpassword2" v-model="nuevoUsuario.password2" type="text" placeholder="Introduce de nuevo el Password" class="form-control">
+            <input id="Inputpassword2" v-model="password2" type="text" placeholder="Introduce de nuevo el Password" class="form-control">
           </div>
-          <div id="recaptcha-container"></div>
+          <div id="recaptcha-containerUser"></div>
           <div class="row">
             <div class="col-xs-12 col-sm-4"><button type="submit" class="btn btn-primary mr-2">Crear</button></div>
             <div class="col-xs-12 col-sm-4"><button @click="cerrarSesion" class="btn btn-primary">Ir a login</button></div>
@@ -51,6 +51,7 @@ export default {
   name:'UsuariosPage',
   data() {
     return {
+      password2: '',
       usuarios: [],
       nuevoUsuario: {
         username: '',
@@ -58,18 +59,17 @@ export default {
         nombre: '',
         apellido1: '',
         apellido2: '',
+        recaptchaToken: null,
       },
       usuarioEditando: null,
       modalInstanceUser: null,  // Referencia al objeto Modal
       sitekey:'6Lch0vUpAAAAALx8RLXtjFnrxuxBT6D-lDf9sDl5',
-      recaptchaToken: null,
     };
   },
   mounted() {
-    this.obtenerUsuarios();
     let intervalId = setInterval(() => {
     if (window.grecaptcha && window.grecaptcha.render) {
-      window.grecaptcha.render('recaptcha-container', {
+      window.grecaptcha.render('recaptcha-containerUser', {
         sitekey: this.sitekey,
         callback: this.onCaptchaVerified,
       });
@@ -78,25 +78,19 @@ export default {
   }, 100); // Verifica cada 100ms
   },
   methods: {
-    async obtenerUsuarios() {
-      try {
-        const respuesta = await this.$http.get('http://localhost:3000/api/usuarios');
-        this.usuarios = respuesta.data;
-      } catch (error) {
-        console.error('Error al obtener ususarios:', error);
-      }
-    },
     async crearUsuario() {
+      console.log('Creando usuario... desde el botton crear en userpage');
       try {
-        if (this.nuevoUsuario.password !== this.nuevoUsuario.password2) {
+        console.log(this.nuevoUsuario);
+        if (this.nuevoUsuario.password !== this.password2) {
           alert('Las contraseñas no coinciden');
           return;
         }else{
           const respuesta = await this.$http.post('http://localhost:3000/api/usuario', this.nuevoUsuario);
-        this.usuarios.push(respuesta.data);
-        this.nuevoUsuario = { username: '', password: '', nombre: '', apellido1: '', apellido2: ''};
-        alert('Usuario creado exitosamente');
-        this.$router.push('/videosMain');
+          this.usuarios.push(respuesta.data);
+          this.nuevoUsuario = { username: '', password: '', nombre: '', apellido1: '', apellido2: ''};
+          alert('Usuario creado exitosamente');
+          this.$router.push('/videosMain');
         }
       } catch (error) {
         console.error('Error al crear usuario:', error);
@@ -146,7 +140,7 @@ export default {
       this.$router.push('/');
     },
     onCaptchaVerified(response) {
-      this.recaptchaToken = response;
+      this.nuevoUsuario.recaptchaToken = response;
     },
   },
 };

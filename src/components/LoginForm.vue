@@ -36,10 +36,10 @@ export default {
       usuario: {
         username: '',
         password: '',
+        recaptchaToken: null,
       },
       error: null,
       sitekey:'6Lch0vUpAAAAALx8RLXtjFnrxuxBT6D-lDf9sDl5',
-      recaptchaToken: null,
     };
   },
   mounted() {
@@ -54,9 +54,13 @@ export default {
   }, 100); // Verifica cada 100ms
 },
   methods: {
+    onCaptchaVerified(response) {
+      this.usuario.recaptchaToken = response;
+    },
     async iniciarSesion() {
       try {
-        const respuesta = await this.$http.post('http://localhost:3000/api/login', this.usuario);
+        console.log('Iniciando sesión con:', this.usuario);
+        const respuesta = await this.$http.post('http://localhost:3000/api/login', this.usuario );
         console.log('Respuesta:', respuesta.data);
         this.error = null; // Clear any previous error
         if (respuesta.data.message === '¡Inicio de sesión exitoso!') {
@@ -72,9 +76,6 @@ export default {
     },
     async cambiarPagina() {
       this.$router.push('/usuariosPage');
-    },
-    onCaptchaVerified(response) {
-      this.recaptchaToken = response;
     },
   },
 };

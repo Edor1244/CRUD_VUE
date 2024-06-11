@@ -21,7 +21,7 @@ async function verifyRecaptcha(req, res, next) {
       next();
     } else {
       // reCAPTCHA inválido, envía un error
-      res.status(400).json({ success: false, message: 'reCAPTCHA inválido' });
+      res.status(400).json({ success: false, message: 'reCAPTCHA inválido' + recaptchaToken });
     }
   } catch (error) {
     // Si hay un error en la solicitud, envía un error

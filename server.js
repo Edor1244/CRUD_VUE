@@ -59,9 +59,11 @@ sequelize.sync().then(() => {
 
 const verifyRecaptcha = require('./src/MiddleWare/verifyRecaptcha'); // Asegúrate de que la ruta sea correcta
 // Crear un usuario nuevo
-app.post('/api/usuario',verifyRecaptcha, async (req, res) => {
-  const { username, password } = req.body;
 
+app.post('/api/usuario',verifyRecaptcha, async (req, res) => {
+  console.log(req.body);
+  console.log('Estamos en el post de usuario');
+  const { username, password,nombre ,apellido1,apellido2  } = req.body;
   // Generar un hash de la contraseña
   bcrypt.hash(password, saltRounds, async (err, hash) => {
     if (err) {
@@ -70,7 +72,7 @@ app.post('/api/usuario',verifyRecaptcha, async (req, res) => {
     }
     try {
       // Crear el usuario con la contraseña encriptada
-      const usuario = await Usuario.create({ username, password: hash });
+      const usuario = await Usuario.create({ username, password: hash,nombre,apellido1,apellido2 });
       res.json(usuario);
     } catch (error) {
       console.error('Error al crear el usuario:', error);
