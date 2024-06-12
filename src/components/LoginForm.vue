@@ -42,10 +42,11 @@ export default {
         recaptchaToken: null,
       },
       error: null,
-      sitekey:'6Lch0vUpAAAAALx8RLXtjFnrxuxBT6D-lDf9sDl5',
+      sitekey: process.env.VUE_APP_reCaptchaSitetKey,
     };
   },
   mounted() {
+    console.log(process.env.reCaptchaSitetKey)
   let intervalId = setInterval(() => {
     if (window.grecaptcha && window.grecaptcha.render) {
       window.grecaptcha.render('recaptcha-container', {

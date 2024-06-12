@@ -44,7 +44,7 @@
         },
         contraseñaEditanda: null,
         modalInstanceUser: null,  // Referencia al objeto Modal
-        sitekey:'6Lch0vUpAAAAALx8RLXtjFnrxuxBT6D-lDf9sDl5',
+        sitekey: process.env.VUE_APP_reCaptchaSitetKey,
       };
     },
     mounted() {

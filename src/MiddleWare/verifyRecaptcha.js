@@ -1,8 +1,11 @@
 const axios = require('axios');
+require('dotenv').config();
 
 // Middleware para verificar el token de reCAPTCHA
 async function verifyRecaptcha(req, res, next) {
   const { recaptchaToken } = req.body;
+
+  const secretKey = process.env.reCaptchaSecretKey;
 
   try {
     const response = await axios.post(
@@ -10,7 +13,7 @@ async function verifyRecaptcha(req, res, next) {
       null,
       {
         params: {
-          secret: '6Lch0vUpAAAAAFI1QpugdfMqjm7VXGLVm69seq-l', // Tu clave secreta de reCAPTCHA
+          secret: secretKey, // Tu clave secreta de reCAPTCHA
           response: recaptchaToken,
         },
       }

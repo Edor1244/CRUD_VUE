@@ -5,6 +5,7 @@ const bcrypt = require('bcrypt');
 const saltRounds = 10;
 const { Op } = require('sequelize');
 const app = express();
+require('dotenv').config();
 app.use(express.json());
 app.use(cors());
 
@@ -52,8 +53,6 @@ sequelize.sync().then(() => {
     console.log(`Servidor corriendo en http://localhost:${PORT}`);
   });
 });
-
-
 
 //                                     <------- Seccion de Usuarios ------->
 

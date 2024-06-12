@@ -1,3 +1,4 @@
+
 import { createApp } from 'vue'
 import App from './App.vue'
 import axios from 'axios'
@@ -5,6 +6,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import $ from 'jquery';
 import 'bootstrap';
 import router from './router.js';
+
 
 
 // Aquí puedes usar jQuery globalmente si fuera necesario
