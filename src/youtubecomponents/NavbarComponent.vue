@@ -3,7 +3,7 @@
     <div class="navbar">
       <span class="navbar-brand">InnovaTube</span>
       <div class="navbar-user">
-        <span>{{ username }}</span>
+        <span>Bienvenido {{ username }} </span>
         <button @click="logout">Cerrar Sesión</button>
       </div>
     </div>
@@ -12,10 +12,10 @@
 
 <script>
 export default {
-  props: ['username'],
+  props: ['username','userid'],
   methods: {
     logout() {
-      localStorage.removeItem('token'); // Ejemplo de eliminación de un token
+      localStorage.removeItem('token');
       this.$emit('logout'); // Emitir evento para informar al componente padre que el usuario ha cerrado sesión
       this.$router.push('/');
     }

@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-const { sequelize, Producto, Usuario } = require('./src/database');
+const { sequelize, Usuario } = require('./src/database');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 const { Op } = require('sequelize');
@@ -8,43 +8,6 @@ const app = express();
 require('dotenv').config();
 app.use(express.json());
 app.use(cors());
-
-// Crear un nuevo producto  <---------Seccion de Videos--------> 
-app.post('/api/productos', async (req, res) => {
-  const { nombre, descripcion, precio } = req.body;
-  const producto = await Producto.create({ nombre, descripcion, precio });
-  res.json(producto);
-});
-
-// Obtener todos los productos
-app.get('/api/productos', async (req, res) => {
-  const productos = await Producto.findAll();
-  res.json(productos);
-});
-
-// Obtener un producto por ID
-app.get('/api/productos/:id', async (req, res) => {
-  const producto = await Producto.findByPk(req.params.id);
-  res.json(producto);
-});
-
-// Actualizar un producto
-app.put('/api/productos/:id', async (req, res) => {
-  const { nombre, descripcion, precio } = req.body;
-  const producto = await Producto.findByPk(req.params.id);
-  producto.nombre = nombre;
-  producto.descripcion = descripcion;
-  producto.precio = precio;
-  await producto.save();
-  res.json(producto);
-});
-
-// Eliminar un producto
-app.delete('/api/productos/:id', async (req, res) => {
-  const producto = await Producto.findByPk(req.params.id);
-  await producto.destroy();
-  res.json({ message: 'Producto eliminado' });
-});
 
 const PORT = process.env.PORT || 3000;
 
@@ -161,15 +124,15 @@ app.delete('/api/usuarios/:id', async (req, res) => {
 
 // Endpoint de inicio de sesión
 app.post('/api/login',verifyRecaptcha, async (req, res) => {
-  const { username, password } = req.body;
+  const { username, password, recaptchaToken } = req.body;
 
   // Buscar el usuario en la base de datos por su nombre de usuario
-  const usuario = await Usuario.findOne({ where: { 
-    [Op.or]: [
-      {username: username},
-      {email: username}
-    ] 
-  } });
+  const usuario = await Usuario.findOne({ where: {
+      [Op.or]: [
+        {username: username},
+        {email: username}
+      ]
+    } });
 
   // Verificar si el usuario existe
   if (!usuario) {
@@ -186,7 +149,17 @@ app.post('/api/login',verifyRecaptcha, async (req, res) => {
     // Verificar si la contraseña coincide
     if (result) {
       // Autenticación exitosa
-      res.json({ message: '¡Inicio de sesión exitoso!'});
+      let dataUser = [
+        usuario.id,
+        usuario.username,
+        usuario.nombre,
+        usuario.apellido1,
+        usuario.apellido2,
+        usuario.email
+      ];
+      console.log(dataUser);
+      console.log(usuario);
+      res.json({ message: '¡Inicio de sesión exitoso!', User: dataUser, Token: recaptchaToken});
     } else {
       // Autenticación fallida
       res.status(401).json({ message: 'Nombre de usuario o contraseña incorrectos' });

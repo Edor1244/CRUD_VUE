@@ -1,6 +1,5 @@
 <template>
   <div>
-    <Navbar :username="username" @logout="handleLogout"/>
     <div class="main-content">
       <VideoListComponent @favorite="addFavorite"/>
       <FavoriteListComponent :favorites="favorites" @remove="removeFavorite"/>
@@ -9,27 +8,25 @@
 </template>
 
 <script>
-import Navbar from '@/youtubecomponents/NavbarComponent.vue';
 import VideoListComponent from '@/youtubecomponents/VideoListComponent.vue';
 import FavoriteListComponent from '@/youtubecomponents/FavoriteListe.vue';
 
 export default {
   name: 'VideosMainPage',
+  props:['username'],
   data() {
     return {
-      username: '',
       favorites: []
-    }
+    };
   },
   components: {
-    Navbar,
     VideoListComponent,
     FavoriteListComponent
   },
   methods: {
     handleLogout() {
-      this.username = '';
-      this.$router.push('/login'); // Redirige al login tras cerrar sesión
+      this.$emit('logout'); // Emite el evento de logout
+      this.$router.push('/'); // Redirige al login tras cerrar sesión
     },
     addFavorite(video) {
       if (!this.favorites.find(fav => fav.id === video.id)) {
@@ -39,10 +36,6 @@ export default {
     removeFavorite(video) {
       this.favorites = this.favorites.filter(fav => fav.id !== video.id);
     }
-  },
-  created() {
-    // Recupera el nombre de usuario (esto puede variar según tu implementación de autenticación)
-    this.username = 'UsuarioAutenticado'; // Deberías reemplazar esto con el nombre de usuario real
   }
 }
 </script>

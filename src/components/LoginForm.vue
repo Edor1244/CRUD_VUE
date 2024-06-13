@@ -1,9 +1,7 @@
 
-/* global grecaptcha */
 <template>
     <div class="container my-5">
       <h1 class="mb-5">InnovaTube</h1>
-      <!-- Login -->
       <div class="login-form">
         <h1>Login</h1>
         <form @submit.prevent="iniciarSesion">
@@ -46,7 +44,6 @@ export default {
     };
   },
   mounted() {
-    console.log(process.env.reCaptchaSitetKey)
   let intervalId = setInterval(() => {
     if (window.grecaptcha && window.grecaptcha.render) {
       window.grecaptcha.render('recaptcha-container', {
@@ -63,11 +60,13 @@ export default {
     },
     async iniciarSesion() {
       try {
-        console.log('Iniciando sesión con:', this.usuario);
         const respuesta = await this.$http.post('http://localhost:3000/api/login', this.usuario );
-        console.log('Respuesta:', respuesta.data);
         this.error = null; // Clear any previous error
         if (respuesta.data.message === '¡Inicio de sesión exitoso!') {
+          const usuario = respuesta.data.User[1];
+          const userid = respuesta.data.User[0];
+          localStorage.setItem('token', respuesta.data.token);
+          this.$emit('authenticated', usuario,userid);
           this.$router.push('/videosMain'); // Redirect to protected area
         } else {
           this.error = respuesta.data.message; // Display error message 
