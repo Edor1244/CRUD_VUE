@@ -20,10 +20,14 @@ export default {
       videos: []
     }
   },
+  mounted() {
+    this.searchVideos(); // Fetch videos on mount
+  },
   methods: {
     async searchVideos() {
+      console.log('Searching videos:', this.searchTerm);
       try {
-        const response = await axios.get('/api/videos', {
+        const response = await axios.get('http://localhost:3000/api/videos', {
           params: { q: this.searchTerm }
         });
         this.videos = response.data;
@@ -31,9 +35,8 @@ export default {
         console.error('Error fetching videos:', error);
       }
     }
-  },
-  mounted() {
-    this.searchVideos(); // Fetch videos on mount
   }
 }
 </script>
+
+

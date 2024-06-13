@@ -22,9 +22,25 @@ const Usuario = sequelize.define('usuario', {
 }, {
   timestamps: false // Desactivar la creación automática de las columnas createdAt y updatedAt
 });
+//Definir el modelo de Video
+const Video = sequelize.define('video', {
+  id: {
+    type: Sequelize.STRING,
+    primaryKey: true
+  },
+  title: Sequelize.STRING,
+}, {
+  timestamps: false
+});
+Usuario.belongsToMany(Video, { through: 'UsuarioVideo' });
+Video.belongsToMany(Usuario, { through: 'UsuarioVideo' });
 
+sequelize.sync({ force: false }).then(() => {
+  console.log('Tablas creadas');
+});
 //Exportar los modelos
 module.exports = {
   sequelize,
   Usuario,
+  Video,
 };

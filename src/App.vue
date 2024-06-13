@@ -1,6 +1,7 @@
 <template>
   <div class="app">
     <header>
+      <!-- Aqui se agregan los componentes que quieran obtener los usuarios -->
       <Navbar v-if="isAuthenticated" :username="username" :userid="userid" @logout="logout"/>
     </header>
     <main>
@@ -29,6 +30,8 @@ export default {
       this.userid = userid;
       this.username = username;
       this.isAuthenticated = true;
+      //De esta manera se le pasa el username y userid a la ruta VideosMain
+      this.$router.push({ name: 'VideosMain', params: { userid: this.userid, username: this.username } });
     },
     logout() {
       localStorage.removeItem('token');

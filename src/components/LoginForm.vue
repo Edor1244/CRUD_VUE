@@ -66,8 +66,7 @@ export default {
           const usuario = respuesta.data.User[1];
           const userid = respuesta.data.User[0];
           localStorage.setItem('token', respuesta.data.token);
-          this.$emit('authenticated', usuario,userid);
-          this.$router.push('/videosMain'); // Redirect to protected area
+          this.$emit('authenticated', usuario, userid);
         } else {
           this.error = respuesta.data.message; // Display error message 
         }

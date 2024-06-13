@@ -19,9 +19,10 @@ const router=createRouter({
             component: userPage // Componente de la página usuarios
         },
         {
-            path: '/videosMain', // Ruta para la página principal (App.vue)
+            path: '/videosMain/:userid/:username', // Ruta modificada para aceptar parámetros
             name: 'VideosMain',
-            component: videosMain // Componente de la página principal
+            component: videosMain,
+            props: true // Permite pasar los parámetros como props al componente
         },
         {
             path: '/passwordRecovery', // Ruta para la página de recuperación de contraseña

@@ -10,10 +10,20 @@
 <script>
 import VideoListComponent from '@/youtubecomponents/VideoListComponent.vue';
 import FavoriteListComponent from '@/youtubecomponents/FavoriteListe.vue';
+import axios from "axios";
 
 export default {
   name: 'VideosMainPage',
-  props:['username'],
+  props: {
+    userid: {
+      type: Number,
+      required: true
+    },
+    username: {
+      type: String,
+      required: true
+    }
+  },
   data() {
     return {
       favorites: []
@@ -23,18 +33,42 @@ export default {
     VideoListComponent,
     FavoriteListComponent
   },
+mounted() {
+  this.getFavorites();
+},
   methods: {
-    handleLogout() {
-      this.$emit('logout'); // Emite el evento de logout
-      this.$router.push('/'); // Redirige al login tras cerrar sesión
-    },
-    addFavorite(video) {
-      if (!this.favorites.find(fav => fav.id === video.id)) {
+    async addFavorite(video) {
+      try {
+        console.log('Entre al addFavorite Function en VidesMainPage:', this.userid);
+        await axios.post('http://localhost:3000/api/favorites', {
+          usuario: this.userid,
+          video
+        });
         this.favorites.push(video);
+      } catch (error) {
+        console.error('Error adding favorite:', error);
       }
     },
-    removeFavorite(video) {
-      this.favorites = this.favorites.filter(fav => fav.id !== video.id);
+    async removeFavorite(video) {
+      try {
+        await axios.delete('http://localhost:3000/api/favorites', {
+          data: {
+            userId: this.userid,
+            videoId: video.id
+          }
+        });
+        this.favorites = this.favorites.filter(fav => fav.id !== video.id);
+      } catch (error) {
+        console.error('Error removing favorite:', error);
+      }
+    },
+    async getFavorites() {
+      try {
+        const response = await axios.get(`http://localhost:3000/api/favorites/${this.userid}`);
+        this.favorites = response.data;
+      } catch (error) {
+        console.error('Error getting favorites:', error);
+      }
     }
   }
 }
