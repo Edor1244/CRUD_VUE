@@ -87,7 +87,7 @@ app.post('/api/login',verifyRecaptcha, async (req, res) => {
 
   // Verificar si el usuario existe
   if (!usuario) {
-    return res.status(401).json({ message: 'Nombre de usuario o contraseña incorrectos' });
+    return res.status(401).json({ message: 'Nombre de usuario o contraseña incorrectos no exite' });
   }
 
   // Comparar la contraseña proporcionada con la contraseña hasheada almacenada
@@ -113,7 +113,7 @@ app.post('/api/login',verifyRecaptcha, async (req, res) => {
       res.json({ message: '¡Inicio de sesión exitoso!', User: dataUser, Token: recaptchaToken});
     } else {
       // Autenticación fallida
-      res.status(401).json({ message: 'Nombre de usuario o contraseña incorrectos' });
+      res.status(401).json({ message: 'Error Diferente' });
     }
   });
 });

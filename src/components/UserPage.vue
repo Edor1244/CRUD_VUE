@@ -1,45 +1,44 @@
 <template>
   <div class="container my-5">
-    <h1 class="mb-5">Registro de Usuarios Nuevos</h1>
-
+    <h1 class="text-center mb-5 display-4">Registro de Usuarios Nuevos</h1>
 
     <!-- Formulario para crear un nuevo usuario -->
-    <div class="card mb-5">
+    <div class="card mb-5 shadow-lg p-4">
       <div class="card-body">
-        <h2 class="card-title">Crear Nuevo Usuario</h2>
+        <h2 class="card-title text-center mb-4">Crear Nuevo Usuario</h2>
         <form @submit.prevent="crearUsuario">
-          <div class="mb-3">
-            <label for="username" class="form-label">UserName</label>
+          <div class="form-group">
+            <label for="username" class="form-label">Username</label>
             <input id="username" v-model="nuevoUsuario.username" type="text" placeholder="Introduce tu UserName" class="form-control">
           </div>
-          <div class="mb-3">
+          <div class="form-group">
             <label for="email" class="form-label">Email</label>
-            <input id="email" v-model="nuevoUsuario.email" type="text" placeholder="Introduce tu email" class="form-control">
+            <input id="email" v-model="nuevoUsuario.email" type="email" placeholder="Introduce tu email" class="form-control">
           </div>
-          <div class="mb-3">
+          <div class="form-group">
             <label for="nombre" class="form-label">Nombre</label>
             <input id="nombre" v-model="nuevoUsuario.nombre" type="text" placeholder="Introduce tu nombre" class="form-control">
           </div>
-          <div class="mb-3">
-            <label for="Apellido1" class="form-label">Apellido 1</label>
+          <div class="form-group">
+            <label for="Apellido1" class="form-label">Primer Apellido</label>
             <input id="Apellido1" v-model="nuevoUsuario.apellido1" type="text" placeholder="Introduce tu Primer Apellido" class="form-control">
           </div>
-          <div class="mb-3">
-            <label for="Apellido2" class="form-label">Apellido 2</label>
+          <div class="form-group">
+            <label for="Apellido2" class="form-label">Segundo Apellido</label>
             <input id="Apellido2" v-model="nuevoUsuario.apellido2" type="text" placeholder="Introduce tu Segundo Apellido" class="form-control">
           </div>
-          <div class="mb-3">
-            <label for="labelPassword" class="form-label">Password</label>
-            <input id="InputPassword" v-model="nuevoUsuario.password" type="text" placeholder="Introduce un Password" class="form-control">
+          <div class="form-group">
+            <label for="InputPassword" class="form-label">Contraseña</label>
+            <input id="InputPassword" v-model="nuevoUsuario.password" type="password" placeholder="Introduce una Contraseña" class="form-control">
           </div>
-          <div class="mb-3">
-            <label for="labelPassword2" class="form-label">Password</label>
-            <input id="Inputpassword2" v-model="password2" type="text" placeholder="Introduce de nuevo el Password" class="form-control">
+          <div class="form-group">
+            <label for="InputPassword2" class="form-label">Repetir Contraseña</label>
+            <input id="InputPassword2" v-model="password2" type="password" placeholder="Introduce de nuevo la Contraseña" class="form-control">
           </div>
           <div id="recaptcha-containerUser"></div>
-          <div class="row">
-            <div class="col-xs-12 col-sm-4"><button type="submit" class="btn btn-primary mr-2">Crear</button></div>
-            <div class="col-xs-12 col-sm-4"><button @click="cerrarSesion" class="btn btn-primary">Ir a login</button></div>
+          <div class="d-flex justify-content-between mt-4">
+            <button type="submit" class="btn btn-primary">Crear</button>
+            <button @click="cerrarSesion" type="button" class="btn btn-secondary">Ir a Login</button>
           </div>
         </form>
       </div>
@@ -48,11 +47,8 @@
 </template>
 
 <script>
-import { Modal } from 'bootstrap';
-
-
 export default {
-  name:'UsuariosPage',
+  name: 'UsuariosPage',
   data() {
     return {
       password2: '',
@@ -67,33 +63,34 @@ export default {
         recaptchaToken: null,
       },
       usuarioEditando: null,
-      modalInstanceUser: null,  // Referencia al objeto Modal
       sitekey: process.env.VUE_APP_reCaptchaSitetKey,
     };
   },
   mounted() {
     let intervalId = setInterval(() => {
-    if (window.grecaptcha && window.grecaptcha.render) {
-      window.grecaptcha.render('recaptcha-containerUser', {
-        sitekey: this.sitekey,
-        callback: this.onCaptchaVerified,
-      });
-      clearInterval(intervalId);
-    }
-  }, 100); // Verifica cada 100ms
+      if (window.grecaptcha && window.grecaptcha.render) {
+        window.grecaptcha.render('recaptcha-containerUser', {
+          sitekey: this.sitekey,
+          callback: this.onCaptchaVerified,
+        });
+        clearInterval(intervalId);
+      }
+    }, 100); // Verifica cada 100ms
   },
   methods: {
     async crearUsuario() {
-      console.log('Creando usuario... desde el botton crear en userpage');
+      console.log('Creando usuario... desde el botón crear en userpage');
       try {
         console.log(this.nuevoUsuario);
         if (this.nuevoUsuario.password !== this.password2) {
           alert('Las contraseñas no coinciden');
           return;
-        }else{
+        } else {
           const respuesta = await this.$http.post('http://localhost:3000/api/usuario', this.nuevoUsuario);
+          console.log('Respuesta Crear Usuario antes del add', respuesta);
           this.usuarios.push(respuesta.data);
-          this.nuevoUsuario = { username: '', password: '', nombre: '', apellido1: '', apellido2: '', email: ''};
+          console.log(respuesta.data);
+          this.nuevoUsuario = { username: '', password: '', nombre: '', apellido1: '', apellido2: '', email: '' };
           alert('Usuario creado exitosamente');
           this.$router.push('/videosMain');
         }
@@ -101,47 +98,7 @@ export default {
         console.error('Error al crear usuario:', error);
       }
     },
-    editarUsuario(usuario) {
-      this.usuarioEditando = null;
-      this.usuarioEditando = usuario;
-      this.modalInstanceUser = null;
-
-      this.$nextTick(() => {
-        if (!this.modalInstanceUser) {
-          const modalElement = document.getElementById('editModalUser');
-          if (modalElement) {
-            this.modalInstanceUser = new Modal(modalElement);
-          }
-        }
-        if (this.modalInstanceUser) {
-          this.modalInstanceUser.show();
-        }
-      });
-    },
-    async guardarUsuario() {
-      try {
-        const respuesta = await this.$http.put(`http://localhost:3000/api/usuarios/${this.usuarioEditando.id}`, this.usuarioEditando);
-        const index = this.usuarios.findIndex(p => p.id === respuesta.data.id);
-        this.usuarios.splice(index, 1, respuesta.data);
-        this.usaurioEditando = null;
-        this.modalInstanceUser.hide();
-      } catch (error) {
-        console.error('Error al guardar cambios:', error);
-      }
-    },
-    cancelarEdicion() {
-      this.productoEditando = null;
-      this.modalInstanceUser.hide();
-    },
-    async eliminarUsuario(id) {
-      try {
-        await this.$http.delete(`http://localhost:3000/api/usuarios/${id}`);
-        this.usuarios = this.usuarios.filter(p => p.id !== id);
-      } catch (error) {
-        console.error('Error al eliminar usuario:', error);
-      }
-    },
-     cerrarSesion() {
+    cerrarSesion() {
       this.$router.push('/');
     },
     onCaptchaVerified(response) {
@@ -150,36 +107,52 @@ export default {
   },
 };
 </script>
+
 <style scoped>
 .container {
-  max-width: 800px; /* Limit the width for a more comfortable reading */
+  max-width: 700px; /* Limit the width for a more comfortable reading */
+  margin: auto;
+  padding: 20px;
 }
 
 .card {
-  background: #f8f9fa;
-  border: 1px solid #e1e4e8;
-  padding: 20px;
-  margin-bottom: 20px;
+  background: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 30px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.card-title {
+  font-size: 1.75rem;
+  color: #333;
 }
 
 .form-label {
-  font-weight: bold;
-  margin-bottom: 10px;
+  font-weight: 600;
+  margin-bottom: 5px;
+  color: #555;
 }
 
 .form-control {
   width: 100%;
   padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.form-group {
   margin-bottom: 20px;
 }
 
 .btn {
-  padding: 10px;
+  padding: 10px 20px;
+  font-size: 1rem;
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
 .btn-primary {
@@ -191,82 +164,18 @@ export default {
   background-color: #0056b3;
 }
 
-.btn-success {
-  background-color: #28a745;
+.btn-secondary {
+  background-color: #6c757d;
   color: white;
 }
 
-.btn-success:hover {
-  background-color: #218838;
+.btn-secondary:hover {
+  background-color: #5a6268;
 }
 
-.btn-danger {
-  background-color: #dc3545;
-  color: white;
-}
-
-.btn-danger:hover {
-  background-color: #c82333;
-}
-.table {
-  width: 100%;
-  margin-top: 20px;
-  border-collapse: collapse;
-  box-shadow: 0 0 20px rgba(0,0,0,0.15);
-}
-
-.table th, .table td {
-  border: 1px solid #ddd;
-  padding: 10px;
-  text-align: left;
-}
-
-.table th {
-  background-color: #f8f9fa;
-  font-weight: bold;
-  color: #333;
-}
-
-.table td {
-  background-color: #fff;
-  color: #666;
-}
-
-.table tr:nth-child(even) td {
-  background-color: #f8f9fa;
-}
-
-.table tr:hover td {
-  background-color: #e9ecef;
-}
-
-.table .btn {
-  padding: 5px 10px;
-  font-size: 0.8rem;
-  transition: all 0.3s ease;
-  margin: 0 15px;
-}
-
-.table .btn-info {
-  background-color: #17a2b8;
-  color: white;
-}
-
-.table .btn-info:hover {
-  background-color: #138496;
-}
-
-.table .btn-danger {
-  background-color: #dc3545;
-  color: white;
-}
-
-.table .btn-danger:hover {
-  background-color: #c82333;
-}
-
-.modal-backdrop.show {
-  /* This style ensures that the background blurs when the modal is active */
-  opacity: 0.5 !important;
+.d-flex {
+  display: flex;
+  gap: 10px;
+  justify-content: space-between;
 }
 </style>

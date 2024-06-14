@@ -1,7 +1,7 @@
 <template>
     <div class="container my-5">
       <h1 class="mb-5">Rescuperar contraseña</h1>
-  
+
 
       <!-- Formulario para recuperar contraseña -->
       <div class="card mb-5">
@@ -30,7 +30,7 @@
       </div>
     </div>
   </template>
-  
+
   <script>
   export default {
     name:'RecoveryPasswordPage',
@@ -72,7 +72,7 @@
         }
         const data = {
             username: this.nuevaContraseña.username,
-            password: this.nuevaContraseña.password,  
+            password: this.nuevaContraseña.password,
         };
       try {
         console.log("Entro al apartado del cambio de contraseña antes del const respuesta")
@@ -92,19 +92,19 @@
   .container {
     max-width: 800px; /* Limit the width for a more comfortable reading */
   }
-  
+
   .card {
     background: #f8f9fa;
     border: 1px solid #e1e4e8;
     padding: 20px;
     margin-bottom: 20px;
   }
-  
+
   .form-label {
     font-weight: bold;
     margin-bottom: 10px;
   }
-  
+
   .form-control {
     width: 100%;
     padding: 10px;
@@ -112,37 +112,37 @@
     border-radius: 5px;
     margin-bottom: 20px;
   }
-  
+
   .btn {
     padding: 10px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
   }
-  
+
   .btn-primary {
     background-color: #007bff;
     color: white;
   }
-  
+
   .btn-primary:hover {
     background-color: #0056b3;
   }
-  
+
   .btn-success {
     background-color: #28a745;
     color: white;
   }
-  
+
   .btn-success:hover {
     background-color: #218838;
   }
-  
+
   .btn-danger {
     background-color: #dc3545;
     color: white;
   }
-  
+
   .btn-danger:hover {
     background-color: #c82333;
   }
@@ -152,60 +152,59 @@
     border-collapse: collapse;
     box-shadow: 0 0 20px rgba(0,0,0,0.15);
   }
-  
+
   .table th, .table td {
     border: 1px solid #ddd;
     padding: 10px;
     text-align: left;
   }
-  
+
   .table th {
     background-color: #f8f9fa;
     font-weight: bold;
     color: #333;
   }
-  
+
   .table td {
     background-color: #fff;
     color: #666;
   }
-  
+
   .table tr:nth-child(even) td {
     background-color: #f8f9fa;
   }
-  
+
   .table tr:hover td {
     background-color: #e9ecef;
   }
-  
+
   .table .btn {
     padding: 5px 10px;
     font-size: 0.8rem;
     transition: all 0.3s ease;
     margin: 0 15px;
   }
-  
+
   .table .btn-info {
     background-color: #17a2b8;
     color: white;
   }
-  
+
   .table .btn-info:hover {
     background-color: #138496;
   }
-  
+
   .table .btn-danger {
     background-color: #dc3545;
     color: white;
   }
-  
+
   .table .btn-danger:hover {
     background-color: #c82333;
   }
-  
+
   .modal-backdrop.show {
     /* This style ensures that the background blurs when the modal is active */
     opacity: 0.5 !important;
   }
   </style>
-  
